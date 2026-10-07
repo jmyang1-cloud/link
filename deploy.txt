@@ -1,0 +1,18 @@
+
+ ⛅️ wrangler 4.92.0
+───────────────────
+🌀 Building list of assets...
+✨ Read 69 files from the assets directory /home/runner/work/link/link/dist
+🌀 Starting asset upload...
+🌀 Found 1 new or modified static asset to upload. Proceeding with upload...
++ /costco.html
+Uploaded 1 of 1 asset
+✨ Success! Uploaded 1 file (67 already uploaded) (0.71 sec)
+
+Total Upload: 0.34 KiB / gzip: 0.25 KiB
+Uploaded link (12.53 sec)
+Deployed link triggers (1.44 sec)
+  https://link.jmyang1.workers.dev
+  pick.airecipe.co.kr (custom domain)
+  link.airecipe.co.kr (custom domain)
+Current Version ID: 2ceb17f1-01e2-4c7c-8caf-a8b95c429df2
