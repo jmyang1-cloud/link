@@ -1,0 +1,57 @@
+name: Deploy
+
+# Publishes dist/ to the owner's Cloudflare account whenever the `production`
+# branch is updated.
+on:
+  push:
+    branches: [production]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      WRANGLER_SEND_METRICS: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check
+        run: |
+          mkdir -p "$RUNNER_TEMP/deploy-logs" && echo "LOGS=$RUNNER_TEMP/deploy-logs" >> "$GITHUB_ENV"
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID must be added as repository secrets." | tee "$RUNNER_TEMP/deploy-logs/result.txt"
+            exit 1
+          fi
+          python3 build.py
+      - name: Deploy
+        run: |
+          set -o pipefail
+          # This repository is public, so the saved log keeps no account identifiers.
+          npx --yes wrangler@4.92.0 deploy 2>&1 | sed -E "s/$CLOUDFLARE_ACCOUNT_ID/[account]/g; s/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+/[email]/g" | tee "$LOGS/deploy.txt"
+      - name: Record result
+        if: success()
+        run: |
+          { echo "deployed ${{ github.sha }}"; grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' "$LOGS/deploy.txt" | sort -u; } | tee "$LOGS/result.txt"
+      # The run logs are not reachable from every network, so a copy is kept in the repository.
+      - name: Publish logs to the deploy-logs branch
+        if: always()
+        run: |
+          cd "$LOGS" 2>/dev/null || exit 0
+          echo "${{ github.sha }} run ${{ github.run_id }} ${{ job.status }}" > run.txt
+          git init -q -b deploy-logs
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "Deploy logs for ${{ github.sha }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" deploy-logs

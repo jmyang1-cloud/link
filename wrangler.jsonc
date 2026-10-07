@@ -1,0 +1,9 @@
+// Cloudflare configuration for the standalone deployment.
+// The site is static: everything under dist/ is served as-is, with no server code.
+{
+  "name": "link",
+  "compatibility_date": "2026-05-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
