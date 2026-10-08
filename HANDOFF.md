@@ -6,8 +6,9 @@
 - 변경: `dist/index.html`의 `.pinned-card` order를 `-1`에서 `1`로 변경(0a9ebc7에서 -1로 되돌아가 있었음). '코스트코 추천템 ↗'의 화살표 삭제(원래 같은 탭에서 열리는 링크). `dist/index.html`(.page-nav)과 `dist/costco.html`(.nav) 메뉴를 같은 탭 스타일로 변경: 위쪽만 둥근 탭, 하단 구분선, 현재 탭은 배경색과 연결되고 위쪽에 초록색 강조선.
 - 검증: 브라우저 미리보기로 두 페이지 확인. 쿠팡 타임특가가 그리드 마지막 카드, 메뉴 텍스트에 ↗ 없음, 현재/비활성 탭 스타일 적용 확인.
 - 커밋/푸시: 이 메모와 함께 main에 푸시.
-- 배포 상태: 후속 기록 참고.
-- 남은 작업/차단 사항: 없음.
+- 커밋: `485c138`.
+- 배포 상태: 미배포. 이 PC의 Wrangler가 로그인되어 있지 않음(`wrangler whoami` → not authenticated). https://pick.airecipe.co.kr 는 아직 이전 버전.
+- 남은 작업/차단 사항: `npx wrangler login` 후 Worker `link`에 배포 필요.
 
 ## 2026-10-08 — GitHub 최신 코드 배포
 
