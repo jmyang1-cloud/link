@@ -1,0 +1,15 @@
+# 인수인계 메모
+
+## 2026-10-08 — 작업 지침 및 현재 상태
+
+- 저장소: https://github.com/jmyang1-cloud/link (`main`)
+- 대표 사이트: https://pick.airecipe.co.kr
+- Cloudflare Worker: `link`
+- 현재 코드: 쿠팡 타임특가 카드가 맨 아래에 표시되도록 `.pinned-card`의 `order`를 `1`로 변경.
+- 코드 커밋: `953e250` (GitHub main 푸시 완료).
+- 배포: 완료. 버전 `b90a1aaf-5bcd-4dd0-8f01-df9be519e401`.
+- 확인: 대표 사이트 HTTP 200, `order:1` 적용 및 기존 `order:-1` 제거 확인.
+- 자동 GitHub 배포 연결은 아직 미설정. 현재 배포는 Wrangler CLI로 수행.
+- 새 작업은 최신 코드 가져오기 → 수정·검증 → 커밋·푸시 순으로 진행하며, 항상 이 파일에 인수인계 내용을 남길 것.
+- 이번 작업: 인수인계 메모 규칙과 메모 파일 추가. 사이트 코드 변경이나 추가 배포는 없음.
+- 남은 작업/차단 사항: 없음.
